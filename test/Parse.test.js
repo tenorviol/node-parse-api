@@ -14,7 +14,7 @@ if (!application_id || !master_key) {
 
 // global objects to test against
 var parse = new Parse(application_id, master_key);
-var className = 'foo';
+var className = 'NodeParseApiTest';
 var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
 var stub;
 
@@ -53,7 +53,7 @@ exports.update = function (assert) {
   parse.update(className, stub.objectId, object, function (err, response) {
     err && console.log(err);
     assert.ok(response);
-    exports.find(assert);
+    exports.find(assert);  // retest find on the updated object
   });
 };
 
