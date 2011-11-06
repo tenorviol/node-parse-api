@@ -1,4 +1,4 @@
-var Parse = require('../lib/Parse.js');
+var Parse = require('../index').Parse;
 
 // use environment variables APPLICATION_ID and MASTER_KEY to test against
 var application_id = process.env.APPLICATION_ID;

@@ -1,0 +1,9 @@
+{
+  "name": "parse-api",
+  "description": "API for accessing Parse.com applications",
+  "version": "0.1.0",
+  "author": "Chris Johnson <tenorviol@yahoo.com>",
+  "repository": "git://github.com/tenorviol/node-parse-api",
+  "main": "index",
+  "engines": { "node": ">= 0.4.0" }
+}
