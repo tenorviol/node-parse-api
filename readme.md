@@ -25,6 +25,19 @@ examples
       console.log(response);
     });
 
+### insert file
+	var fs = require('fs'),
+		fileName = 'myMedia.mp3';
+	fs.readFile(fileName, function (err, data) {
+		if (err) throw err;
+		app.insertFile(fileName, data, 'audio/mpeg', function(err, response){
+			if(err) throw err;
+			console.log('Name: ' + response.name);
+			console.log('Url: ' + response.url);
+		});
+	});
+	 
+
 ### find one
 
     // the Foo with id = 'someId'
