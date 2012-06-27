@@ -35,7 +35,7 @@ examples
 ### find many
 
     // all Foo objects with foo = 'bar'
-    app.find('Foo', { foo: 'bar' }, function (err, response) {
+    app.findMany('Foo', { foo: 'bar' }, function (err, response) {
       console.log(response);
     });
 
