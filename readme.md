@@ -25,6 +25,16 @@ examples
       console.log(response);
     });
 
+### insert a file
+
+    // add a Foo object, { foo: 'bar' }
+    app.insertFile(fileName, data, fileType, function (err, response) {
+      fileLink = response.url
+      parseName = response.name
+        app.insert('Foo', { "foo" : fileLink, "bar" : parseName }, function(erro, res){
+       })
+    });
+
 ### find one
 
     // the Foo with id = 'someId'
