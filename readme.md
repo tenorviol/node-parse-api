@@ -4,7 +4,7 @@ Node Parse API
 install
 -------
 
-    npm install parse-api
+    npm install node-parse-api
 
 examples
 --------
@@ -27,10 +27,9 @@ examples
 
 ### insert a file
 
-    // add a Foo object, { foo: 'bar' }
     app.insertFile(fileName, data, fileType, function (err, response) {
-      fileLink = response.url
-      parseName = response.name
+      fileLink = response.url;
+      parseName = response.name;
         app.insert('Foo', { "foo" : fileLink, "bar" : parseName }, function(erro, res){
        })
     });
