@@ -59,3 +59,19 @@ examples
     app.delete('Foo', 'someId', function (err) {
       // nothing to see here
     });
+
+### reset a password
+
+    parse.passwordReset(userEmail, function(err, response){
+      console.log(response);
+    });
+
+### update User email
+
+    parse.updateUserEmail(objectId, email, function(err, response){
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(response);
+      }
+    });
