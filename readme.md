@@ -62,13 +62,15 @@ examples
 
 ### reset a password
 
-    parse.passwordReset(userEmail, function(err, response){
+    //email is built into Parse's special User class 
+    app.passwordReset(email, function(err, response){
       console.log(response);
     });
 
 ### update User email
 
-    parse.updateUserEmail(objectId, email, function(err, response){
+    //email is built into Parse's special User class 
+    app.updateUserEmail(objectId, email, function(err, response){
       if (err) {
         console.log(err);
       } else {
