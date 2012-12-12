@@ -77,3 +77,14 @@ examples
         console.log(response);
       }
     });
+
+### insert installation data
+
+    //first arg is either 'ios' or 'android'.  second arg is either the Apple deviceToken or the Android installationId.  The other args are optional
+    app.insertInstallationData("ios", "0123456784abcdef0123456789abcdef0123456789abcdef0123456789abcdef", function(err, response){
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(response);
+      }
+    });
