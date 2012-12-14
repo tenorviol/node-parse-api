@@ -11,7 +11,7 @@ examples
 
 ### setup
 
-    var Parse = require('parse-api').Parse;
+    var Parse = require('node-parse-api').Parse;
     
     var APP_ID = ...;
     var MASTER_KEY = ...;
