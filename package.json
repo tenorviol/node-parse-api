@@ -1,7 +1,7 @@
 {
   "name": "node-parse-api",
   "description": "API for accessing Parse.com applications",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "author": "Chris Johnson <tenorviol@yahoo.com>, Michael Leveton <mleveton@prepcloud.com>, Seth Gholson",
   "repository": "git://github.com/leveton/node-parse-api",
   "main": "index",
