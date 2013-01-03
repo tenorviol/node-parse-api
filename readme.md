@@ -1,6 +1,10 @@
 Node Parse API
 ==============
 
+IMPORTANT NOTE: This api is not currently maintained.
+If I were starting a parse project today using node.js,
+I would probably start out with https://github.com/shiki/kaiseki
+
 install
 -------
 
@@ -12,10 +16,10 @@ examples
 ### setup
 
     var Parse = require('parse-api').Parse;
-    
+
     var APP_ID = ...;
     var MASTER_KEY = ...;
-    
+
     var app = new Parse(APP_ID, MASTER_KEY);
 
 ### insert
@@ -36,7 +40,7 @@ examples
 			console.log('Url: ' + response.url);
 		});
 	});
-	 
+
 
 ### find one
 
