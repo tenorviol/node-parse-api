@@ -49,7 +49,7 @@ exports.update = function (assert) {
     var num = Math.floor(Math.random() * 10000);
   } while (num == object.foo);
   object.foo = num;
-  
+
   parse.update(className, stub.objectId, object, function (err, response) {
     err && console.log(err);
     assert.ok(response);
@@ -65,5 +65,21 @@ exports['delete'] = function (assert) {
       assert.equal(404, err.type);
       assert.done();
     });
+  });
+};
+
+var fileName = 'NodeParseApiFile';
+var fileData = 'Hello world!';
+var fileContentType = 'text/plain';
+var fileStub;
+
+exports.insertFile = function (assert) {
+  parse.insertFile(fileName, fileData, fileContentType, function (err, response) {
+    err && console.log(err);
+    assert.ok(response);
+    assert.equals(0, response.url.indexOf('http'));
+    assert.ok(response.url.indexOf(fileName));
+    assert.ok(response.name.indexOf(fileName));
+    assert.done();
   });
 };
