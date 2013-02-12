@@ -216,10 +216,9 @@ examples
 
 ### get all the roles
 
-  app.getRoles(function(err, resp){  //like so
-    console.log(resp);
-
-  });
+    app.getRoles(function(err, resp){  //like so
+      console.log(resp);
+    });
 
 ### get a role against a cetain param
 
@@ -239,6 +238,6 @@ examples
         alert: "sending too many push notifications is obnoxious"
       }
     };
-   app.sendPush(notification, function(err, resp){
-     console.log(resp);
-   });
+    app.sendPush(notification, function(err, resp){
+      console.log(resp);
+    });
