@@ -18,10 +18,22 @@ examples
     
     var app = new Parse(APP_ID, MASTER_KEY);
 
-### insert
+### insert an object
 
     // add a Foo object, { foo: 'bar' }
     app.insert('Foo', { foo: 'bar' }, function (err, response) {
+      console.log(response);
+    });
+
+### insert a User 
+
+    app.insertCustom('users', { foo: 'bar' }, function (err, response) {
+      console.log(response);
+    });
+
+### insert a User with GeoPoints 
+
+    app.insertCustom('users', { foo: 'bar', location: {__type: 'GeoPoint', latitude: <int>, longitude: <int>} }, function (err, response) {
       console.log(response);
     });
 
@@ -47,6 +59,13 @@ examples
     app.findMany('Foo', { foo: 'bar' }, function (err, response) {
       console.log(response);
     });
+
+### count the number of objects
+
+   //just use findMany, and call results.length on the response
+   app.findMany('Foo', { user: '<objectId>' }, function (err, response) {
+     console.log(response.results.length);
+});
 
 ### update
 
@@ -123,3 +142,103 @@ examples
         console.log(response);
       }
     });
+
+### create a role for a particular user
+    
+    //create a data object that links the user object's objectId to the role
+
+var data = {
+  name: 'Administrator',
+  ACL: {
+      "*": {
+        "read": true
+      }
+    },
+  roles: {
+      "__op": "AddRelation",
+      "objects": [
+        {
+          "__type": "Pointer",
+          "className": "_Role",
+          "objectId": "<objectId>"
+        }
+      ]
+    },
+  users: {
+      "__op": "AddRelation",
+      "objects": [
+        {
+          "__type": "Pointer",
+          "className": "_User",
+          "objectId": "<objectId>"
+        }
+      ]
+    }
+};
+
+  app.insertRole(data, function(err, resp){
+     console.log(resp);
+   });
+
+### get a role
+
+  //pass the role object's objectId
+  app.getRole("<objectId>", function(err, resp){  
+    console.log(resp);
+  });
+
+### update a role
+  //pass the objectId of the role, data contains the user's objectId
+
+var data = {
+  users: {
+      "__op": "RemoveRelation",
+      "objects": [
+        {
+          "__type": "Pointer",
+          "className": "_User",
+          "objectId": "<objectId>"
+        }
+      ]
+    }
+};
+
+  app.updateRole("<objectId>", data, function(err, resp){ 
+    console.log(resp);
+  });
+
+### delete a role
+  
+  //pass the objectId of the role 
+  app.deleteRole("<objectId>", function(err, resp){ 
+
+  });
+
+### get all the roles
+
+  app.getRoles(function(err, resp){  //like so
+    console.log(resp);
+
+  });
+
+### get a role against a cetain param
+
+var params = {
+   where: { name: "Administrator" } 
+};
+
+   app.getRoles(params, function(err, resp){
+     console.log(resp);
+   });
+
+### send a push notification
+
+var notification = {
+  channels: [''],
+  data: {
+    alert: "sending too many push notifications is obnoxious"
+  }
+};
+   app.sendPush(notification, function(err, resp){
+     console.log(resp);
+   });
