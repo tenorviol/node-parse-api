@@ -147,72 +147,72 @@ examples
     
     //create a data object that links the user object's objectId to the role
 
-var data = {
-  name: 'Administrator',
-  ACL: {
-      "*": {
-        "read": true
-      }
-    },
-  roles: {
-      "__op": "AddRelation",
-      "objects": [
-        {
-          "__type": "Pointer",
-          "className": "_Role",
-          "objectId": "<objectId>"
+    var data = {
+      name: 'Administrator',
+      ACL: {
+          "*": {
+            "read": true
+          }
+        },
+      roles: {
+          "__op": "AddRelation",
+          "objects": [
+            {
+              "__type": "Pointer",
+              "className": "_Role",
+             "objectId": "<objectId>"
+            }
+          ]
+        },
+      users: {
+          "__op": "AddRelation",
+          "objects": [
+            {
+              "__type": "Pointer",
+              "className": "_User",
+              "objectId": "<objectId>"
+            }
+          ]
         }
-      ]
-    },
-  users: {
-      "__op": "AddRelation",
-      "objects": [
-        {
-          "__type": "Pointer",
-          "className": "_User",
-          "objectId": "<objectId>"
-        }
-      ]
-    }
-};
+    };
 
-  app.insertRole(data, function(err, resp){
-     console.log(resp);
-   });
+      app.insertRole(data, function(err, resp){
+         console.log(resp);
+       });
 
 ### get a role
 
-  //pass the role object's objectId
-  app.getRole("<objectId>", function(err, resp){  
-    console.log(resp);
-  });
+    //pass the role object's objectId
+    app.getRole("<objectId>", function(err, resp){  
+      console.log(resp);
+    });
 
 ### update a role
-  //pass the objectId of the role, data contains the user's objectId
+    //pass the objectId of the role, data contains the user's objectId
 
-var data = {
-  users: {
-      "__op": "RemoveRelation",
-      "objects": [
-        {
-          "__type": "Pointer",
-          "className": "_User",
-          "objectId": "<objectId>"
-        }
-      ]
-    }
-};
+    var data = {
+      users: {
+          "__op": "RemoveRelation",
+          "objects": [
+            {
+              "__type": "Pointer",
+              "className": "_User",
+              "objectId": "<objectId>"
+            }
+          ]
+        } 
+    };
 
-  app.updateRole("<objectId>", data, function(err, resp){ 
-    console.log(resp);
-  });
+      app.updateRole("<objectId>", data, function(err, resp){ 
+        console.log(resp);
+      });
 
 ### delete a role
   
-  //pass the objectId of the role 
-  app.deleteRole("<objectId>", function(err, resp){ 
+    //pass the objectId of the role 
+    app.deleteRole("<objectId>", function(err, resp){ 
 
-  });
+    });
 
 ### get all the roles
 
@@ -223,22 +223,22 @@ var data = {
 
 ### get a role against a cetain param
 
-var params = {
-   where: { name: "Administrator" } 
-};
+    var params = {
+       where: { name: "Administrator" } 
+    };
 
-   app.getRoles(params, function(err, resp){
-     console.log(resp);
-   });
+       app.getRoles(params, function(err, resp){
+         console.log(resp);
+       });
 
 ### send a push notification
 
-var notification = {
-  channels: [''],
-  data: {
-    alert: "sending too many push notifications is obnoxious"
-  }
-};
+    var notification = {
+      channels: [''],
+      data: {
+        alert: "sending too many push notifications is obnoxious"
+      }
+    };
    app.sendPush(notification, function(err, resp){
      console.log(resp);
    });
