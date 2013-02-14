@@ -210,15 +210,11 @@ examples
 ### delete a role
   
     //pass the objectId of the role 
-    app.deleteRole("<objectId>", function(err, resp){ 
-
-    });
+    app.deleteRole("<objectId>", function(err, resp){});
 
 ### get all the roles
 
-    app.getRoles(function(err, resp){  //like so
-      console.log(resp);
-    });
+    app.getRoles(function(err, resp){});
 
 ### get a role against a cetain param
 
@@ -231,7 +227,8 @@ examples
        });
 
 ### send a push notification
-
+    
+    //The data param has to follow the data structure as described in the [Parse REST API](https://www.parse.com/docs/rest#push)
     var notification = {
       channels: [''],
       data: {
