@@ -238,3 +238,11 @@ examples
     app.sendPush(notification, function(err, resp){
       console.log(resp);
     });
+
+### note on sending dates
+    
+    //when inserting a data, you must use the Parse date object structure, i.e.:
+    {
+      "__type": "Date", 
+      "iso": new Date("<year>", "<month>", "<day>").toJSON()
+    }
