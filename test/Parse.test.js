@@ -15,8 +15,11 @@ if (!application_id || !master_key) {
 // global objects to test against
 var parse = new Parse(application_id, master_key);
 var className = 'NodeParseApiTest';
+var className2 = 'NodeParseApiRelationTest';
 var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
+var object2 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
 var stub;
+var stub2;
 
 exports.insert = function (assert) {
   parse.insert(className, object, function (err, response) {
@@ -25,7 +28,21 @@ exports.insert = function (assert) {
     stub = response;
     assert.done();
   });
+  
+
 };
+
+exports['insert 2'] = function(assert){
+  parse.insert(className2,object2, function(err,response){
+      err && console.log(err);
+      assert.ok(response);
+      stub2 = response;
+      assert.done();
+  });
+}
+
+
+
 
 exports.find = function (assert) {
   parse.find(className, stub.objectId, function (err, response) {
@@ -44,6 +61,9 @@ exports['find many'] = function (assert) {
   });
 };
 
+
+
+
 exports.update = function (assert) {
   do {
     var num = Math.floor(Math.random() * 10000);
@@ -56,6 +76,15 @@ exports.update = function (assert) {
     exports.find(assert);  // retest find on the updated object
   });
 };
+
+
+exports['add relation'] = function (assert) {
+  parse.addRelation("secondObject",className,stub.objectId,className2,stub2.objectId, function (err ,response){
+    err && console.log(response);
+    assert.ok(response);
+    assert.done();
+ });
+}
 
 exports['delete'] = function (assert) {
   parse['delete'](className, stub.objectId, function (err) {
