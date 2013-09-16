@@ -18,6 +18,8 @@ var className = 'NodeParseApiTest';
 var className2 = 'NodeParseApiRelationTest';
 var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
 var object2 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
+var object3 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
+var object4 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
 var stub;
 var stub2;
 
@@ -40,8 +42,6 @@ exports['insert 2'] = function(assert){
       assert.done();
   });
 }
-
-
 
 
 exports.find = function (assert) {
@@ -84,6 +84,15 @@ exports['add relation'] = function (assert) {
     assert.ok(response);
     assert.done();
  });
+}
+
+exports['batch'] = function (assert) {
+  requests = [{"method":"PUT","path": "/1/classes/"+className+'/'+stub.objectId, "body": object3},{"method":"PUT","path": "/1/classes/"+className2+'/'+stub2.objectId, "body": object4} ];
+  parse.batch(requests, function(err,response){
+    err && console.log(response);
+    assert.ok(response);
+    assert.done();
+  });
 }
 
 exports['delete'] = function (assert) {
