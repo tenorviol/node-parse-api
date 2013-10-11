@@ -51,6 +51,15 @@ exports.find = function (assert) {
   });
 };
 
+exports['find with limit and order'] = function (assert) {
+  parse.findMany(className,{},'-createdAt',1, function (err1,res1){
+    assert.equal(1, res1.results.length);
+    assert.equal(stub.objectId, res1.results[0].objectId);
+    assert.equal(stub.createdAt, res1.results[0].createdAt);
+    assert.done();
+  });
+}
+
 exports['find many'] = function (assert) {
   parse.find(className, stub, function (err, response) {
     assert.equal(1, response.results.length);
