@@ -60,6 +60,12 @@ examples
       console.log(response);
     });
 
+
+    // all Foo objects
+    app.findMany('Foo', '', function (err, response) {
+      console.log(response);
+    }):
+
 ### count the number of objects
 
    //just use findMany, and call results.length on the response
