@@ -68,10 +68,10 @@ examples
 
 ### count the number of objects
 
-   //just use findMany, and call results.length on the response
-   app.findMany('Foo', { user: '<objectId>' }, function (err, response) {
-     console.log(response.results.length);
-});
+    // just use findMany, and call results.length on the response
+    app.findMany('Foo', { user: '<objectId>' }, function (err, response) {
+        console.log(response.results.length);
+    });
 
 ### update
 
