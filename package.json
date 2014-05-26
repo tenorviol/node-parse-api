@@ -5,5 +5,13 @@
   "author": "Chris Johnson <tenorviol@yahoo.com>, Michael Leveton <mleveton@prepcloud.com>, Seth Gholson",
   "repository": "git://github.com/leveton/node-parse-api",
   "main": "index",
-  "engines": { "node": ">= 0.4.0" }
+  "scripts":{
+    "test":"nodeunit"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "devDependencies": {
+    "nodeunit": "~0.9.0"
+  }
 }
