@@ -85,6 +85,12 @@ examples
       // nothing to see here
     });
 
+### deleteAll
+
+    app.deleteAll('Foo', function (err) {
+      // nothing to see here
+    });
+
 ### reset a password
 
     //email is built into Parse's special User class

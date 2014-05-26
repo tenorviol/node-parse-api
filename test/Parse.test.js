@@ -114,3 +114,14 @@ exports['delete'] = function (assert) {
     });
   });
 };
+
+exports['delete all'] = function(assert){
+  parse.insert(className2,object2, function(err,response){
+      parse.deleteAll(className2, function(){
+        parse.findMany(className2, '', function(err, response){
+          assert.equal(0, response.results.length);
+          assert.done();
+        });
+      });
+  });
+}
