@@ -30,7 +30,7 @@ exports.insert = function (assert) {
     stub = response;
     assert.done();
   });
-  
+
 
 };
 
@@ -78,7 +78,7 @@ exports.update = function (assert) {
     var num = Math.floor(Math.random() * 10000);
   } while (num == object.foo);
   object.foo = num;
-  
+
   parse.update(className, stub.objectId, object, function (err, response) {
     err && console.log(err);
     assert.ok(response);
