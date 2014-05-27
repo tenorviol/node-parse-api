@@ -12,10 +12,10 @@ examples
 ### setup
 
     var Parse = require('node-parse-api').Parse;
-    
+
     var APP_ID = ...;
     var MASTER_KEY = ...;
-    
+
     var app = new Parse(APP_ID, MASTER_KEY);
 
 ### insert an object
@@ -25,13 +25,13 @@ examples
       console.log(response);
     });
 
-### insert a User 
+### insert a User
 
     app.insertCustom('users', { foo: 'bar' }, function (err, response) {
       console.log(response);
     });
 
-### insert a User with GeoPoints 
+### insert a User with GeoPoints
 
     app.insertCustom('users', { foo: 'bar', location: {__type: 'GeoPoint', latitude: <int>, longitude: <int>} }, function (err, response) {
       console.log(response);
@@ -85,16 +85,22 @@ examples
       // nothing to see here
     });
 
+### deleteAll
+
+    app.deleteAll('Foo', function (err) {
+      // nothing to see here
+    });
+
 ### reset a password
 
-    //email is built into Parse's special User class 
+    //email is built into Parse's special User class
     app.passwordReset(email, function(err, response){
       console.log(response);
     });
 
 ### update User email
 
-    //email is built into Parse's special User class 
+    //email is built into Parse's special User class
     app.updateUserEmail(objectId, email, function(err, response){
       if (err) {
         console.log(err);
@@ -150,7 +156,7 @@ examples
     });
 
 ### create a role for a particular user
-    
+
     //create a data object that links the user object's objectId to the role
 
     var data = {
@@ -189,7 +195,7 @@ examples
 ### get a role
 
     //pass the role object's objectId
-    app.getRole("<objectId>", function(err, resp){  
+    app.getRole("<objectId>", function(err, resp){
       console.log(resp);
     });
 
@@ -206,16 +212,16 @@ examples
               "objectId": "<objectId>"
             }
           ]
-        } 
+        }
     };
 
-      app.updateRole("<objectId>", data, function(err, resp){ 
+      app.updateRole("<objectId>", data, function(err, resp){
         console.log(resp);
       });
 
 ### delete a role
-  
-    //pass the objectId of the role 
+
+    //pass the objectId of the role
     app.deleteRole("<objectId>", function(err, resp){});
 
 ### get all the roles
@@ -225,7 +231,7 @@ examples
 ### get a role against a cetain param
 
     var params = {
-       where: { name: "Administrator" } 
+       where: { name: "Administrator" }
     };
 
        app.getRoles(params, function(err, resp){
@@ -233,7 +239,7 @@ examples
        });
 
 ### send a push notification
-    
+
     //The data param has to follow the data structure as described in the [Parse REST API](https://www.parse.com/docs/rest#push)
     var notification = {
       channels: [''],
@@ -246,9 +252,9 @@ examples
     });
 
 ### note on sending dates
-    
+
     //when inserting a data, you must use the Parse date object structure, i.e.:
     {
-      "__type": "Date", 
+      "__type": "Date",
       "iso": new Date("<year>", "<month>", "<day>").toJSON()
     }
