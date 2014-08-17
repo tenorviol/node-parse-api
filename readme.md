@@ -27,7 +27,10 @@ examples
 
 ### insert a User
 
-    app.insertCustom('users', { foo: 'bar' }, function (err, response) {
+    app.insertCustom('users', { 
+      username: 'tom@j.com', 
+      password: 'wow'
+    }, function (err, response) {
       console.log(response);
     });
 
