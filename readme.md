@@ -4,7 +4,7 @@ Node Parse API
 install
 -------
 
-    npm install Leventon/node-parse-api
+    npm install node-parse-api
  
 examples
 --------
