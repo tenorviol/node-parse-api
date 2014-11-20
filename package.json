@@ -1,7 +1,7 @@
 {
   "name": "node-parse-api",
   "description": "A Parse.com REST API client for Node.js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Chris Johnson <tenorviol@yahoo.com>, Michael Leveton <mleveton@prepcloud.com>, Seth Gholson",
   "repository": "git://github.com/leveton/node-parse-api",
   "main": "index",
