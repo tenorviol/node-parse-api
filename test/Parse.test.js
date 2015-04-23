@@ -207,7 +207,6 @@ exports.addRelation = function (test) {
       }
     };
     parse.find(className, query, function (error, response) {
-      console.log(response);
       test.ok(!error, 'There shoudn\'t be an error object.');
       test.equal(stub1.foo, response.results[0].foo, 'The response object should contain the related object.');
       test.done();
