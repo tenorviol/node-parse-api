@@ -95,7 +95,7 @@ app.insertUser({
 
 ### user login
 
-loginUser(username `string`, password `string`, callback `function`)
+* loginUser(username `string`, password `string`, callback `function`)
 
 Response contains all of the user fields except password, also includes a sessionToken for this user.
 
@@ -107,7 +107,7 @@ app.loginUser('foo', 'bar', function (error, response) {
 
 ### me
 
-me(sessionToken `string`, callback `function`)
+* me(sessionToken `string`, callback `function`)
 
 ```javascript
 app.me('sessionToken', function (error, response) {
@@ -117,7 +117,7 @@ app.me('sessionToken', function (error, response) {
 
 ### insert a file
 
-Method parameters: insertFile(fileName `string`, data `string/buffer`, contentType `string`, callback `function`)
+*  insertFile(fileName `string`, data `string/buffer`, contentType `string`, callback `function`)
 
 ```javascript
 // first upload the file to the parse cloud
@@ -130,7 +130,7 @@ app.insertFile('foo.txt', 'bar', 'text/plain', function (err, response) {
 
 ### find one
 
-find(className `string`, query `object`, callback `function`)
+* find(className `string`, query `object`, callback `function`)
 
 ```javascript
 // the Foo with id = 'someId'
@@ -153,7 +153,7 @@ app.find('Foo', query, function (error, response) {
 
 ### find many
 
-find(className `string`, query `object`, callback `function`)
+* find(className `string`, query `object`, callback `function`)
 
 ```javascript
 // all Foo objects with foo = 'bar'
@@ -188,7 +188,7 @@ app.find('Foo', query, function (error, response ) {
 
 ### find one user
 
-getUser(query `object`, callback `function`)
+* getUser(query `object`, callback `function`)
 
 ```javascript
 app.find({objectId: 'someId'}, function (err, response) {
@@ -198,7 +198,7 @@ app.find({objectId: 'someId'}, function (err, response) {
 
 ### find many users
 
-getUser(query `object`, callback `function`)
+* getUser(query `object`, callback `function`)
 
 ```javascript
 // all users with foo = 'bar'
@@ -231,7 +231,7 @@ app.find('Foo', query, function (error, response) {
 
 ### edit an object
 
-update(className `string`, objectId `string`, callback `function`)
+* update(className `string`, objectId `string`, callback `function`)
 
 ```javascript
 app.update('Foo', 'someId', {foo: 'bar'}, function (err, response) {
@@ -241,7 +241,7 @@ app.update('Foo', 'someId', {foo: 'bar'}, function (err, response) {
 
 ### delete an object
 
-delete(className `string`, objectId `string`, callback `function`)
+* delete(className `string`, objectId `string`, callback `function`)
 
 ```javascript
 app.delete('Foo', 'someId', function (err, response) {
@@ -251,7 +251,7 @@ app.delete('Foo', 'someId', function (err, response) {
 
 ### delete all objects in a class
 
-deleteAll(className `string`, callback `function`)
+* deleteAll(className `string`, callback `function`)
 
 ```javascript
 app.deleteAll('Foo', function (err, response) {
@@ -261,7 +261,7 @@ app.deleteAll('Foo', function (err, response) {
 
 ### delete user
 
-deleteUser(objectId `string`, [sessionToken `string`], callback `function`)
+* deleteUser(objectId `string`, [sessionToken `string`], callback `function`)
 
 If you are using the master key you don't need any session tokens.
 
@@ -281,7 +281,7 @@ app.deleteUser('someId', 'sessionToken', function (error, response) {
 
 ### delete all users
 
-deleteAll(callback `function`)
+* deleteAllUsers(callback `function`)
 
 This will only work when using the master key.
 
@@ -293,7 +293,7 @@ app.deleteAllUsers(function (err, response) {
 
 ### reset a password
 
-passwordReset(data `string`, callback `function`)
+* passwordReset(data `string`, callback `function`)
 
 ```javascript
 //email is built into Parse's special User class
@@ -304,7 +304,7 @@ app.passwordReset(email, function(err, response){
 
 ### edit a user object
 
-updateUser(objectId `string`, data `object`, [sessionToken `string`], callback `function`)
+* updateUser(objectId `string`, data `object`, [sessionToken `string`], callback `function`)
 
 With master key
 
@@ -324,7 +324,7 @@ app.updateUser('someId', {email: 'foo@example.com'}, 'sesstionToken', function(e
 
 ### batch requests
 
-batch(requests `array`, callback `function`)
+* batch(requests `array`, callback `function`)
 
 ```javascript
 var requests = [
