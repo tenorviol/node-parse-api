@@ -241,6 +241,16 @@ exports.installationTests = {
       test.ok(!error, 'There shouldn\'t be an error object');
       test.done();
     });
+  },
+
+  deleteInstallation: function(test) {
+    parse.getInstallationDataForDeviceToken('0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', function(error, response) {
+      var id = response.results[0].objectId;
+      parse.deleteInstallation(id, function(error, response){
+        test.ok(!error, 'There shouldn\'t be an error obejct');
+        test.done();
+      });
+    });
   }
 }
 
