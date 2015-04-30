@@ -235,6 +235,15 @@ exports.deleteAll = function (test) {
   });
 };
 
+exports.installationTests = {
+  upsertInstallation: function(test) {
+    parse.upsertInstallation('ios', '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', {userID: 'jenny'}, function(error, response) {
+      test.ok(!error, 'There shouldn\'t be an error object');
+      test.done();
+    });
+  }
+}
+
 exports.userTests = {
   insertUser : function (test) {
     test.expect(1);
