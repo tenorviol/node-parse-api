@@ -1,3 +1,4 @@
+// this file runs tests against the master key
 var Parse = require('../index').Parse;
 
 // use environment variables APPLICATION_ID and MASTER_KEY to test against
@@ -16,126 +17,281 @@ if (!application_id || !master_key) {
 var parse = new Parse(application_id, master_key);
 var className = 'NodeParseApiTest';
 var className2 = 'NodeParseApiRelationTest';
-var object = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
-var object2 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
-var object3 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
-var object4 = { foo: Math.floor(Math.random() * 10000) };  // ERROR: if you change the type
-var stub;
+var stub1;
 var stub2;
+var stub3;
+var stubRelation;
 
-exports.insert = function (assert) {
-  parse.insert(className, object, function (err, response) {
-    err && console.log(err);
-    assert.ok(response);
-    stub = response;
-    assert.done();
-  });
-
-
-};
-
-exports['insert 2'] = function(assert){
-  parse.insert(className2,object2, function(err,response){
-      err && console.log(err);
-      assert.ok(response);
-      stub2 = response;
-      assert.done();
-  });
-}
-
-
-exports.find = function (assert) {
-  parse.find(className, stub.objectId, function (err, response) {
-    assert.equal(object.foo, response.foo);
-    assert.done();
+exports.insert = function (test) {
+  var data = {
+    foo: 'bar0',
+    baz: 'qux0',
+    quux: 'quuux'
+  };
+  parse.insert(className, data, function (error, response) {
+    test.expect(1);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    stub1 = response;
+    test.done();
   });
 };
 
-exports['find with limit and order'] = function (assert) {
-  parse.findMany(className,{},'-createdAt',1, function (err1,res1){
-    assert.equal(1, res1.results.length);
-    assert.equal(stub.objectId, res1.results[0].objectId);
-    assert.equal(stub.createdAt, res1.results[0].createdAt);
-    assert.done();
-  });
-}
-
-exports['find many'] = function (assert) {
-  parse.find(className, stub, function (err, response) {
-    assert.equal(1, response.results.length);
-    assert.equal(stub.objectId, response.results[0].objectId);
-    assert.equal(stub.createdAt, response.results[0].createdAt);
-    assert.equal(object.foo, response.results[0].foo);
-    assert.done();
-  });
-};
-
-
-
-
-exports.update = function (assert) {
-  do {
-    var num = Math.floor(Math.random() * 10000);
-  } while (num == object.foo);
-  object.foo = num;
-
-  parse.update(className, stub.objectId, object, function (err, response) {
-    err && console.log(err);
-    assert.ok(response);
-    exports.find(assert);  // retest find on the updated object
+exports.batchInsert = function (test) {
+  var batchRequests = [
+    {
+      method: 'POST',
+      path: '/1/classes/' + className,
+      body: {
+        foo: 'bar1',
+        baz: 'qux1',
+        quux: 'quuux'
+      }
+    },
+    {
+      method: 'POST',
+      path: '/1/classes/' + className,
+      body: {
+        foo: 'bar2',
+        baz: 'qux2',
+        quux: 'quuux'
+      }
+    }
+  ];
+  parse.batch(batchRequests, function (error, response) {
+    test.expect(1);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    stub2 = response[0].success;
+    stub3 = response[1].success;
+    test.done();
   });
 };
 
-
-exports['add relation'] = function (assert) {
-  parse.addRelation("secondObject",className,stub.objectId,className2,stub2.objectId, function (err ,response){
-    err && console.log(response);
-    assert.ok(response);
-    assert.done();
- });
-}
-
-exports['batch'] = function (assert) {
-  requests = [{"method":"PUT","path": "/1/classes/"+className+'/'+stub.objectId, "body": object3},{"method":"PUT","path": "/1/classes/"+className2+'/'+stub2.objectId, "body": object4} ];
-  parse.batch(requests, function(err,response){
-    err && console.log(response);
-    assert.ok(response);
-    assert.done();
+exports.find = function (test) {
+  parse.find(className, stub1.objectId, function (err, response) {
+    test.equal(stub1.objectId, response.objectId);
+    test.done();
   });
-}
+};
 
-exports['delete'] = function (assert) {
-  parse['delete'](className, stub.objectId, function (err) {
-    err && console.log(err);
-    assert.ok(!err);
-    parse.find(className, stub.objectId, function (err, response) {
-      assert.equal(404, err.type);
-      assert.done();
+exports.findManyNoConstraints = function (test) {
+  parse.find(className, '', function (error, response) {
+    test.expect(3);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    test.ok(response.results.length === 3, 'There should be 3 objects in response.results.');
+    test.equal(stub1.objectId, response.results[0].objectId, 'The first object should have the same objectId as the stub object.');
+    test.done();
+  });
+};
+
+// order limit skip keys include
+exports.findManyWithConstraints = {
+  order: function (test) {
+    var query = {
+      order: '-foo'
+    };
+    parse.find(className, query, function (error, response) {
+      test.expect(4);
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.equal('bar0', response.results[2].foo, 'response.results[2].foo should be "bar0".');
+      test.equal('bar1', response.results[1].foo, 'response.results[1].foo should be "bar1".');
+      test.equal('bar2', response.results[0].foo, 'response.results[0].foo should be "bar2".');
+      test.done();
+    });
+  },
+  'order keys skip': function (test) {
+    var query = {
+      order: 'foo',
+      keys: 'baz',
+      skip: 2
+    };
+    parse.find(className, query, function (error, response) {
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.equal('qux2', response.results[0].baz, 'response.results[0].baz should be "qux2".');
+      test.done();
+    });
+  },
+  'order limit': function (test) {
+    var query = {
+      order: '-foo',
+      limit: 2
+    };
+    parse.find(className, query, function (error, response) {
+      test.expect(4);
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.ok(response.results.length === 2, 'There should be 2 objects in response.results.');
+      test.equal('bar1', response.results[1].foo, 'response.results[1].foo should be "bar1".');
+      test.equal('qux1', response.results[1].baz, 'response.results[1].baz should be "qux1".');
+      test.done();
+    });
+  }
+};
+
+exports.deprecatedFindMany = {
+  setUp: function (callback) {
+    this.query = {
+      quux: 'quuux'
+    };
+    callback();
+  },
+  '3 arguments': function (test) {
+    parse.findMany(className, this.query, function (error, response) {
+      test.expect(2);
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.ok(response.results.length === 3, 'There should be 3 objects in response.results.');
+      test.done();
+    });
+  },
+  '5 arguments': function (test) {
+    parse.findMany(className, this.query, 'foo', 2, function (error, response) {
+      test.expect(3);
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.ok(response.results.length === 2, 'There should be 2 objects in response.results.');
+      test.equal('bar0', response.results[0].foo, 'response.results[0].foo should be "bar0".');
+      test.done();
+    });
+  },
+  '6 arguments': function (test) {
+    parse.findMany(className, this.query, 'foo', 2, 1, function (error, response) {
+      test.expect(3);
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.ok(response.results.length === 2, 'There should be 2 objects in response.results.');
+      test.equal('bar1', response.results[0].foo, 'response.results[0].foo should be "bar1".');
+      test.done();
+    });
+  },
+  'invalid number of arguments': function (test) {
+    test.expect(1);
+    test.throws(function () {parse.findMany('foo', 'bar', 'baz', 'qux');});
+    test.done();
+  }
+};
+
+exports.update = function (test) {
+  stub1.foo = 'bar00';
+  parse.update(className, stub1.objectId, {foo: 'bar00'}, function (error, response) {
+    test.expect(4);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    test.ok(response);
+    parse.find(className, stub1.objectId, function (error, response) {
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.equal(stub1.foo, response.foo, 'response.foo should be "bar00".');
+      test.done();
     });
   });
 };
 
-exports['delete all'] = function(assert){
-  parse.insert(className2,object2, function(err,response){
-      parse.deleteAll(className2, function(){
-        parse.findMany(className2, '', function(err, response){
-          assert.equal(0, response.results.length);
-          assert.done();
-        });
-      });
+exports.insertClass2 = function (test) {
+  parse.insert(className2, {foo: 'bar'}, function (error, response) {
+    test.expect(1);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    stubRelation = response;
+    test.done();
   });
+};
+
+exports.addRelation = function (test) {
+  parse.addRelation("secondObject", className2, stubRelation.objectId, className, stub1.objectId, function (error, response) {
+    test.expect(3);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+
+    var query = {
+      where: {
+        $relatedTo: {
+          object: {
+            __type: 'Pointer',
+            className: className2,
+            objectId: stubRelation.objectId
+          },
+          key: 'secondObject'
+        }
+      }
+    };
+    parse.find(className, query, function (error, response) {
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.equal(stub1.foo, response.results[0].foo, 'The response object should contain the related object.');
+      test.done();
+    });
+  });
+};
+
+exports.deleteOne = function (test) {
+  parse.delete(className2, stubRelation.objectId, function (error, response) {
+    test.expect(3);
+    test.ok(!error, 'There shouldn\'t be an error object.');
+    parse.find(className2, stubRelation.objectId, function (error, response) {
+      test.ok(error, 'There should be an error object.');
+      test.equal(101, error.code, 'error.code should be 101.');
+      test.done();
+    });
+  });
+};
+
+exports.deleteAll = function (test) {
+  parse.deleteAll(className, function (error, response) {
+    test.expect(2);
+    test.ok(!error, 'There shoudn\'t be an error object.');
+    test.ok(response[0].hasOwnProperty('success'));
+    test.done();
+  });
+};
+
+exports.installationTests = {
+  upsertInstallation: function(test) {
+    parse.upsertInstallation('ios', '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', {userID: 'jenny'}, function(error, response) {
+      test.ok(!error, 'There shouldn\'t be an error object');
+      test.done();
+    });
+  },
+
+  deleteInstallation: function(test) {
+    parse.getInstallationDataForDeviceToken('0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef', function(error, response) {
+      var id = response.results[0].objectId;
+      parse.deleteInstallation(id, function(error, response){
+        test.ok(!error, 'There shouldn\'t be an error obejct');
+        test.done();
+      });
+    });
+  }
 }
 
-exports['push notification error'] = function (assert) {
+exports.userTests = {
+  insertUser : function (test) {
+    test.expect(1);
+    parse.insertUser({username: 'foo', password: 'bar'}, function (error, response) {
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.done();
+    });
+  },
+  getUser: function (test) {
+    test.expect(2);
+    parse.getUser({where:{username: 'foo'}}, function (error, response) {
+      test.ok(!error, 'There shoudn\'t be an error object.');
+      test.equal('foo', response.results[0].username, 'response.results[0].username should be foo.');
+      test.done();
+    });
+  },
+  deleteUser: function (test) {
+    test.expect(1);
+    parse.getUser({where:{username: 'foo'}}, function (error, response) {
+      parse.deleteUser(response.results[0].objectId, function (error, response) {
+        test.ok(!error, 'There shoudn\'t be an error object.');
+        test.done();
+      });
+    });
+  }
+};
+
+exports.pushNotificationError = function (test) {
   parse.sendPush({
     channels: ['foobar'],
     data2: {
       alert: 'test message'
     }
-  }, function (error, result) {
-    assert.ok(error);
-    assert.equal(result, null);
-    assert.equal(error.message, 'Missing the push data. (Code: 115)');
-    assert.done();
+  }, function (error, response) {
+    test.expect(3);
+    test.ok(error);
+    test.equal(response, null);
+    test.equal(error.code, 115, 'error.code should be 115.');
+    test.done();
   });
-}
+};
