@@ -123,7 +123,24 @@ exports.findManyWithConstraints = {
       test.equal('qux1', response.results[1].baz, 'response.results[1].baz should be "qux1".');
       test.done();
     });
-  }
+  },
+  'leaves query object intact': function (test) {
+    var query = {
+      objectId: 'xyz',
+      where: {
+        foo: 'bar'
+      },
+      order: 'foo',
+      keys: 'baz',
+      skip: 2
+    };
+    var queryStr = JSON.stringify(query);
+    parse.find(className, query, function (error, response) {
+      queryStr2 = JSON.stringify(query);
+      test.equal(queryStr, queryStr2, 'query object should be intact');
+      test.done();
+    });
+  },
 };
 
 exports.deprecatedFindMany = {
