@@ -517,15 +517,15 @@ app.sendPush(notification, function(err, resp){
 
 ### usage of a sessionToken for all operations
 
-If you use node-parse-api with a logged-in user in a node.js server environement a client might send a sessionToken with a request against the server. 
-You can pass the client sessionToken from the client to performs database operations on behalf of that user session.
+If you use node-parse-api in a node.js server environement a client might send a sessionToken with a request to your server. 
+You can pass that sessionToken as a constructor option to perform database operations on behalf of that user session.
 
 This allows e.g. to find objects of classes that are restricted to be read by only that user (or role).
 
 ```javascript
 var Parse = require('node-parse-api').Parse;
 
-// let's assume this is a sessionToken of an user who is member of the role "moderator"
+// let's assume this is a sessionToken of a user who is member of the role "moderator"
 var sessionToken = '3h3gaa32bdd3h3gaa323h3gaa32bddbdd';
 
 var options = {
