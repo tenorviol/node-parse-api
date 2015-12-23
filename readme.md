@@ -191,7 +191,7 @@ app.find('Foo', query, function (error, response ) {
 * getUser(query `object`, callback `function`)
 
 ```javascript
-app.find({objectId: 'someId'}, function (err, response) {
+app.getUser({objectId: 'someId'}, function (err, response) {
   console.log(response);
 });
 ```
