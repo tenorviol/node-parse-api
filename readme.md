@@ -191,7 +191,7 @@ app.find('Foo', query, function (error, response ) {
 * getUser(query `object`, callback `function`)
 
 ```javascript
-app.find({objectId: 'someId'}, function (err, response) {
+app.getUser({objectId: 'someId'}, function (err, response) {
   console.log(response);
 });
 ```
@@ -512,6 +512,33 @@ var notification = {
 };
 app.sendPush(notification, function(err, resp){
   console.log(resp);
+});
+```
+
+### usage of a sessionToken for all operations
+
+If you use node-parse-api in a node.js server environement a client might send a sessionToken with a request to your server. 
+You can pass that sessionToken as a constructor option to perform database operations on behalf of that user session.
+
+This allows e.g. to find objects of classes that are restricted to be read by only that user (or role).
+
+```javascript
+var Parse = require('node-parse-api').Parse;
+
+// let's assume this is a sessionToken of a user who is member of the role "moderator"
+var sessionToken = '3h3gaa32bdd3h3gaa323h3gaa32bddbdd';
+
+var options = {
+    app_id:'...',
+    api_key:'...',
+    session_token: sessionToken // , master_key:'...' could be used too 
+}
+
+var app = new Parse(options);
+
+// let's assume Foo is a class with read permission for "moderator"-users only
+app.find('Foo', {objectId: 'someId'}, function (err, response) {
+    console.log(response);
 });
 ```
 
